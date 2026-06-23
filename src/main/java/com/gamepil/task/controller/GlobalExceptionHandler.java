@@ -3,7 +3,7 @@ package com.gamepil.task.controller;
 import com.gamepil.task.dto.ErrorResponseDto;
 import com.gamepil.task.dto.FieldErrorDto;
 import com.gamepil.task.exception.AuthException;
-import com.gamepil.task.exception.AlreadyExistsException;
+import com.gamepil.task.exception.ConflictException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -47,14 +47,14 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
 
-    @ExceptionHandler(AlreadyExistsException.class)
-    public ResponseEntity<ErrorResponseDto> handleEmailAlreadyExistsException(AlreadyExistsException ex){
+    @ExceptionHandler(ConflictException.class)
+    public ResponseEntity<ErrorResponseDto> handleConflictException(ConflictException ex){
         ErrorResponseDto response = new ErrorResponseDto(
                 ex.getMessage(),
                 LocalDateTime.now(),
                 List.of()
         );
 
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
     }
 }
