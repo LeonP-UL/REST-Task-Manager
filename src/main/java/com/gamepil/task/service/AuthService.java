@@ -5,7 +5,7 @@ import com.gamepil.task.dto.LoginRequestDto;
 import com.gamepil.task.dto.RegisterRequestDto;
 import com.gamepil.task.entity.User;
 import com.gamepil.task.exception.AuthException;
-import com.gamepil.task.exception.EmailAlreadyExistsException;
+import com.gamepil.task.exception.AlreadyExistsException;
 import com.gamepil.task.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -25,7 +25,11 @@ public class AuthService {
     public AuthResponse register(RegisterRequestDto request) {
 
         if (userRepository.existsByEmail(request.email())){
-            throw new EmailAlreadyExistsException("Email already exists");
+            throw new AlreadyExistsException("Email already exists");
+        }
+
+        if (userRepository.existsByUsername(request.name())){
+            throw new AlreadyExistsException("Username already exists");
         }
 
         User user = new User();
