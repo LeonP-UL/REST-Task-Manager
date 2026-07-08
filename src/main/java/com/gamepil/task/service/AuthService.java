@@ -15,11 +15,14 @@ public class AuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
     public AuthService(UserRepository userRepository,
-                       PasswordEncoder passwordEncoder) {
+                       PasswordEncoder passwordEncoder,
+                       JwtService jwtService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
     }
 
     public AuthResponse register(RegisterRequestDto request) {
@@ -41,7 +44,8 @@ public class AuthService {
 
         userRepository.save(user);
 
-        return new AuthResponse("User " + user.getUserName() + " registered successfully", user.getEmail());
+        String token = jwtService.generateToken(user);
+        return new AuthResponse(token, user.getId(), user.getEmail());
     }
 
     public AuthResponse login (LoginRequestDto request){
@@ -52,7 +56,8 @@ public class AuthService {
             throw new AuthException("Invalid login credentials");
         }
 
-        return new AuthResponse("Login successful for user " + user.getUserName(), user.getEmail());
+        String token = jwtService.generateToken(user);
+        return new AuthResponse(token, user.getId(), user.getEmail());
 
     }
 }
