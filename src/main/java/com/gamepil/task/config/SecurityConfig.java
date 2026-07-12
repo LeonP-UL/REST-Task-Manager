@@ -29,6 +29,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/auth/**").permitAll()
                         .requestMatchers("/error").permitAll()
                         .requestMatchers("/api/v1/test").authenticated()
+                        .requestMatchers("/api/v1/tasks").authenticated()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults())

@@ -28,7 +28,7 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        //This means "login identifier"Okay
+        //This means "login identifier"
         return user.getEmail();
     }
 
@@ -50,5 +50,9 @@ public class CustomUserDetails implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public User getUser(){
+        return user;
     }
 }
